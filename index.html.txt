@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Smart Mysore | dream ► plan ► enjoy</title>
+    
+    <!-- FontAwesome 6 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-black: #0a0a0c;
+            --bg-card: #121319;
+            --bg-card-hover: #1a1b24;
+            --bg-glass: rgba(10, 10, 12, 0.88);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(163, 196, 0, 0.4);
+            
+            --accent-color: #A3C400;
+            --primary-accent: #A3C400;
+            --primary-glow: rgba(163, 196, 0, 0.35);
+            --primary-hover: #b8dc00;
+            
+            --text-main: #f3f4f6;
+            --text-muted: #a1a1aa;
+            --text-dim: #71717a;
+            
+            --font-heading: 'Space Grotesk', sans-serif;
+            --font-body: 'Outfit', sans-serif;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Canvas Particle Background */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            color: #ffffff;
+            letter-spacing: -0.02em;
+        }
+
+        .highlight-accent {
+            color: var(--accent-color);
+            text-shadow: 0 0 16px var(--primary-glow);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Glassmorphism Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 85px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .brand-logo-wrap {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .svg-logo {
+            height: 60px;
+            width: auto;
+            filter: drop-shadow(0 0 10px rgba(163, 196, 0, 0.2));
+            transition: var(--transition);
+        }
+
+        .svg-logo:hover {
+            transform: scale(1.03);
+            filter: drop-shadow(0 0 15px rgba(163, 196, 0, 0.5));
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2.2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent-color);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            box-shadow: 0 0 10px var(--primary-glow);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.6rem;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        /* Cyberpunk Button Tokens */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.85rem 1.8rem;
+            border-radius: 10px;
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: #000;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(163, 196, 0, 0.7);
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-whatsapp:hover {
+            background: #20ba5a;
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(37, 211, 102, 0.6);
+        }
+
+        .btn-fb {
+            background: #1877F2;
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(24, 119, 242, 0.4);
+        }
+
+        .btn-fb:hover {
+            background: #166fe5;
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(24, 119, 242, 0.6);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            border-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            box-shadow: 0 0 15px var(--primary-glow);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section (90vh) */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: 100px;
+            padding-bottom: 3rem;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 3.5rem;
+            align-items: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 18px;
+            border-radius: 30px;
+            background: rgba(163, 196, 0, 0.08);
+            border: 1px solid rgba(163, 196, 0, 0.3);
+            color: var(--accent-color);
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .hero-badge span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-color);
+            animation: pulse-glow 1.5s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% { opacity: 0.3; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.3; transform: scale(0.9); }
+        }
+
+        .hero-title {
+            font-size: clamp(2.6rem, 5vw, 4.5rem);
+            line-height: 1.08;
+            font-weight: 800;
+            margin-bottom: 1.2rem;
+            text-transform: uppercase;
+        }
+
+        .hero-slogan-tag {
+            font-family: var(--font-heading);
+            font-size: 1.35rem;
+            color: var(--accent-color);
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 2px;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 1.8vw, 1.2rem);
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+        }
+
+        .hero-cta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+        }
+
+        .hero-visual-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-highlight);
+            border-radius: 24px;
+            padding: 2.2rem;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px var(--primary-glow);
+            text-align: center;
+        }
+
+        .hero-visual-card .logo-large {
+            width: 100%;
+            max-width: 320px;
+            height: auto;
+            margin: 0 auto 1.5rem;
+            display: block;
+        }
+
+        .quick-contact-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin-top: 1.5rem;
+            text-align: left;
+        }
+
+        .quick-contact-box h4 {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+        }
+
+        .quick-info-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.6rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .quick-info-row:hover {
+            color: var(--accent-color);
+        }
+
+        .quick-info-row i {
+            color: var(--accent-color);
+            width: 20px;
+        }
+
+        /* General Sections */
+        section {
+            padding: 6.5rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-header {
+            margin-bottom: 3.5rem;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            color: var(--accent-color);
+            font-size: 0.88rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 3.8vw, 2.8rem);
+            font-weight: 800;
+        }
+
+        /* Feeds & Packages Layout */
+        .feed-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+        }
+
+        .fb-embed-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 1.5rem;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .fb-iframe-container {
+            width: 100%;
+            height: 540px;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .posts-cards-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .post-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .post-card:hover {
+            border-color: var(--border-highlight);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 15px var(--primary-glow);
+        }
+
+        .post-badge {
+            display: inline-block;
+            background: rgba(163, 196, 0, 0.12);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .post-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.6rem;
+            line-height: 1.35;
+        }
+
+        .post-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+        }
+
+        /* Animated Stats Counter */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.8rem;
+            margin-top: 3.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(18, 19, 25, 0.6) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.2rem 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            border-color: var(--border-highlight);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-color);
+            box-shadow: 0 0 12px var(--primary-glow);
+        }
+
+        .stat-number {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 4vw, 3.4rem);
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        /* Contact & Map Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3.5rem;
+            align-items: flex-start;
+        }
+
+        .contact-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+        }
+
+        .contact-info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+            margin-top: 2rem;
+        }
+
+        .contact-info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.2rem;
+        }
+
+        .contact-icon-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            background: rgba(163, 196, 0, 0.08);
+            border: 1px solid rgba(163, 196, 0, 0.3);
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            flex-shrink: 0;
+        }
+
+        .contact-info-details h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-info-details p, .contact-info-details a {
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .contact-info-details a:hover {
+            color: var(--accent-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 1.1rem 1.2rem;
+            border-radius: 12px;
+            color: var(--text-main);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            background: rgba(163, 196, 0, 0.02);
+            box-shadow: 0 0 15px rgba(163, 196, 0, 0.25);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 130px;
+        }
+
+        .map-container {
+            margin-top: 1.8rem;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            height: 250px;
+            position: relative;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            filter: grayscale(0.9) invert(0.92) contrast(1.2);
+        }
+
+        /* Toast Popup */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--accent-color);
+            color: #000;
+            padding: 1.1rem 2rem;
+            border-radius: 12px;
+            font-weight: 800;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 20px var(--primary-glow);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateY(150px);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 2000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Footer */
+        footer {
+            background: #060608;
+            border-top: 1px solid var(--border-color);
+            padding: 4.5rem 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.2fr;
+            gap: 3.5rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            margin-top: 1.2rem;
+            max-width: 420px;
+        }
+
+        .footer-links h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1.4rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.8rem;
+        }
+
+        .social-btn {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+
+        .social-btn:hover {
+            background: var(--accent-color);
+            color: #000;
+            transform: translateY(-4px);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* Mobile & Tablet Responsiveness */
+        @media (max-width: 992px) {
+            .hero-grid, .feed-grid, .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 85px;
+                right: -100%;
+                width: 100%;
+                height: calc(100vh - 85px);
+                background: var(--bg-black);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 2.2rem;
+                transition: var(--transition);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-link {
+                font-size: 1.25rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="brand-logo-wrap" aria-label="Travel Smart Mysore Home">
+                <!-- Inline SVG Vector Emblem matching original image logo -->
+                <svg class="svg-logo" viewBox="0 0 600 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="600" height="240" rx="20" fill="#FFDE00"/>
+                    <!-- Green Swoosh -->
+                    <path d="M110 100 C 120 40, 240 40, 360 70 C 260 120, 160 160, 110 100 Z" fill="#009640"/>
+                    <!-- Orange Arc -->
+                    <path d="M220 35 C 310 35, 360 80, 250 130 C 310 90, 280 55, 220 35 Z" fill="#FF5000"/>
+                    <!-- Blue Wave -->
+                    <path d="M220 80 C 320 80, 480 100, 480 115 C 380 140, 260 110, 220 80 Z" fill="#00A0E9"/>
+                    <!-- Car Silhouette Outline -->
+                    <path d="M270 65 L 300 45 L 370 45 L 430 65 L 500 67 C 505 67, 505 85, 495 85 L 490 85 C 485 70, 455 70, 450 85 L 350 85 C 345 70, 315 70, 310 85 L 275 85 Z" fill="none" stroke="#000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="332" cy="85" r="12" fill="none" stroke="#000" stroke-width="7"/>
+                    <circle cx="468" cy="85" r="12" fill="none" stroke="#000" stroke-width="7"/>
+                    <!-- Text TRAVEL -->
+                    <text x="300" y="145" text-anchor="middle" font-family="'Space Grotesk', Arial, sans-serif" font-weight="900" font-size="64" fill="#4A5568" letter-spacing="2">TRAVEL</text>
+                    <!-- Text SMART -->
+                    <text x="300" y="198" text-anchor="middle" font-family="'Space Grotesk', Arial, sans-serif" font-weight="900" font-size="68" fill="#000000" letter-spacing="1">SMART</text>
+                    <!-- Tagline -->
+                    <text x="300" y="228" text-anchor="middle" font-family="'Outfit', Arial, sans-serif" font-weight="800" font-style="italic" font-size="22" fill="#000000">dream ► plan ► enjoy</text>
+                </svg>
+            </a>
+
+            <button class="hamburger" id="hamburger-btn" aria-label="Toggle Mobile Drawer">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <ul class="nav-links" id="nav-menu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#packages" class="nav-link">Packages & Feed</a></li>
+                <li><a href="#stats" class="nav-link">Stats & Fleet</a></li>
+                <li><a href="#about" class="nav-link">About Us</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li>
+                    <a href="tel:06362352261" class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.85rem;">
+                        <i class="fa-solid fa-phone"></i> 063623 52261
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span></span> Official Travel Operator & Mysuru Guide
+                    </div>
+                    <h1 class="hero-title">
+                        TRAVEL SMART <span class="highlight-accent">MYSORE</span>
+                    </h1>
+                    <div class="hero-slogan-tag">
+                        dream <i class="fa-solid fa-play" style="font-size:0.8rem;"></i> plan <i class="fa-solid fa-play" style="font-size:0.8rem;"></i> enjoy
+                    </div>
+                    <p class="hero-subtitle">
+                        Premium outstation cab services, luxury tempo travellers, heritage city tours, and customized holiday packages for Mysore, Ooty, Coorg, Wayanad, Chikmagalur & Bengaluru Airport.
+                    </p>
+                    <div class="hero-cta">
+                        <a href="https://wa.me/916362352261?text=Hi%20TravelSmart,%20I%20want%20to%20book%20a%20cab/tour%20package." target="_blank" rel="noopener" class="btn btn-whatsapp">
+                            <i class="fa-brands fa-whatsapp" style="font-size:1.2rem;"></i> Book Now (WhatsApp)
+                        </a>
+                        <a href="#packages" class="btn btn-primary">
+                            <i class="fa-solid fa-compass"></i> View Packages
+                        </a>
+                        <a href="tel:06362352261" class="btn btn-outline">
+                            <i class="fa-solid fa-phone"></i> Call Us
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-visual-card">
+                    <!-- Brand SVG Card Graphic -->
+                    <svg class="logo-large" viewBox="0 0 600 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="600" height="240" rx="20" fill="#FFDE00"/>
+                        <path d="M110 100 C 120 40, 240 40, 360 70 C 260 120, 160 160, 110 100 Z" fill="#009640"/>
+                        <path d="M220 35 C 310 35, 360 80, 250 130 C 310 90, 280 55, 220 35 Z" fill="#FF5000"/>
+                        <path d="M220 80 C 320 80, 480 100, 480 115 C 380 140, 260 110, 220 80 Z" fill="#00A0E9"/>
+                        <path d="M270 65 L 300 45 L 370 45 L 430 65 L 500 67 C 505 67, 505 85, 495 85 L 490 85 C 485 70, 455 70, 450 85 L 350 85 C 345 70, 315 70, 310 85 L 275 85 Z" fill="none" stroke="#000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="332" cy="85" r="12" fill="none" stroke="#000" stroke-width="7"/>
+                        <circle cx="468" cy="85" r="12" fill="none" stroke="#000" stroke-width="7"/>
+                        <text x="300" y="145" text-anchor="middle" font-family="'Space Grotesk', Arial, sans-serif" font-weight="900" font-size="64" fill="#4A5568" letter-spacing="2">TRAVEL</text>
+                        <text x="300" y="198" text-anchor="middle" font-family="'Space Grotesk', Arial, sans-serif" font-weight="900" font-size="68" fill="#000000" letter-spacing="1">SMART</text>
+                        <text x="300" y="228" text-anchor="middle" font-family="'Outfit', Arial, sans-serif" font-weight="800" font-style="italic" font-size="22" fill="#000000">dream ► plan ► enjoy</text>
+                    </svg>
+
+                    <div class="quick-contact-box">
+                        <h4>Direct Booking Line</h4>
+                        <a href="tel:06362352261" class="quick-info-row">
+                            <i class="fa-solid fa-phone"></i> 063623 52261
+                        </a>
+                        <a href="https://wa.me/916362352261" target="_blank" rel="noopener" class="quick-info-row">
+                            <i class="fa-brands fa-whatsapp"></i> +91 63623 52261
+                        </a>
+                        <div class="quick-info-row" style="font-size: 0.88rem; color: var(--text-muted);">
+                            <i class="fa-solid fa-location-dot"></i> Rajiv Nagar, Mysuru, KA 570019
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="packages">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Real Facebook Feeds & Popular Packages</span>
+                <h2 class="section-title">South India Tour Packages</h2>
+            </div>
+
+            <div class="feed-grid">
+                <!-- Facebook Official Embed Widget -->
+                <div class="fb-embed-card">
+                    <h3 style="margin-bottom: 1rem; font-size: 1.25rem; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-brands fa-facebook" style="color: #1877F2;"></i> Facebook Feed
+                    </h3>
+                    <div class="fb-iframe-container">
+                        <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ftravelsmartmysore%2F&tabs=timeline&width=500&height=540&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="100%" height="100%" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                    </div>
+                </div>
+
+                <!-- Featured South Indian Tour Cards -->
+                <div class="posts-cards-list">
+                    <div class="post-card">
+                        <span class="post-badge">Mysore - Ooty - Coorg (6D / 5N)</span>
+                        <h3>Complete Heritage & Hill Station Tour</h3>
+                        <p>Explore Mysore Palace, Chamundi Hill, Ooty Botanical Gardens, Coonoor Toy Train, Madikeri Fort, and Abbey Falls with dedicated AC cab driver.</p>
+                        <a href="https://www.facebook.com/travelsmartmysore/" target="_blank" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                            Explore on Facebook <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <div class="post-card">
+                        <span class="post-badge">Coorg Stay & Captain's Crown</span>
+                        <h3>Misty Coorg Honeymoon & Holiday Packages</h3>
+                        <p>Special hotel package tie-ups with Captain's Crown Hotel in Coorg, including Mysore station pick-up, driver allowance, and sightseeing tours.</p>
+                        <a href="https://www.facebook.com/travelsmartmysore/" target="_blank" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                            Explore on Facebook <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <div class="post-card">
+                        <span class="post-badge">Wayanad & Chikmagalur Trips</span>
+                        <h3>Coffee Estate & Nature Exploration</h3>
+                        <p>Wayanad Banasura Dam, Edakkal Caves, and Chikmagalur Mullayanagiri Peak road trips in comfortable SUVs, Innova Crysta, and Ertiga cabs.</p>
+                        <a href="https://www.facebook.com/travelsmartmysore/" target="_blank" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                            Explore on Facebook <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <div class="post-card">
+                        <span class="post-badge">Group Travels</span>
+                        <h3>Force Urbania & Tempo Traveller Rental</h3>
+                        <p>Luxury 12, 17, and 26 seater Force Urbania and Tempo Travellers for corporate outings, family re-unions, and wedding guest transportation.</p>
+                        <a href="https://wa.me/916362352261?text=Inquiry%20for%20Force%20Urbania/Tempo%20Traveller%20rental" target="_blank" class="btn btn-whatsapp" style="padding: 0.5rem 1rem; font-size: 0.85rem;">
+                            WhatsApp Quote <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="stats">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Track Record</span>
+                <h2 class="section-title">Channel & Service Performance</h2>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" data-target="12500">0</div>
+                    <div class="stat-label">Happy Travelers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="85">0</div>
+                    <div class="stat-label">Vehicles Available</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="15">0</div>
+                    <div class="stat-label">Years Experience</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" data-target="120">0</div>
+                    <div class="stat-label">Destinations Covered</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">About Us</span>
+                <h2 class="section-title">Mysuru's Reliable Travel Operator</h2>
+            </div>
+
+            <div style="max-width: 850px; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 2.5rem; text-align: center;">
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                    <strong>Travel Smart Mysore (Travelsmart24)</strong> operates out of Rajiv Nagar, Mysuru. We specialize in point-to-point outstation cab rentals, customized family holiday itineraries, airport transfers to Kempegowda International Airport (BLR), and corporate luxury group travel across South India.
+                </p>
+                <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                    <a href="tel:06362352261" class="btn btn-primary">
+                        <i class="fa-solid fa-phone"></i> Call 063623 52261
+                    </a>
+                    <a href="https://maps.app.goo.gl/YHVUENvendD8WTgW6" target="_blank" rel="noopener" class="btn btn-outline">
+                        <i class="fa-solid fa-map-location-dot"></i> Google Maps Pin
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Get In Touch</span>
+                <h2 class="section-title">Contact & Location Details</h2>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <h3>Contact Information</h3>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem;">Visit our office in Mysuru or reach out directly for instant cab quotes.</p>
+
+                    <div class="contact-info-list">
+                        <div class="contact-info-item">
+                            <div class="contact-icon-box">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div class="contact-info-details">
+                                <h4>Office Address</h4>
+                                <p>2841, 2nd Stage, Rajiv Nagar,<br>Mysuru, Karnataka 570019, India</p>
+                                <a href="https://maps.app.goo.gl/YHVUENvendD8WTgW6" target="_blank" rel="noopener" style="color: var(--accent-color); font-size: 0.88rem; font-weight: 700; display: inline-block; margin-top: 4px;">
+                                    <i class="fa-solid fa-up-right-from-square"></i> Open in Google Maps App
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <div class="contact-icon-box">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div class="contact-info-details">
+                                <h4>Phone Number</h4>
+                                <a href="tel:06362352261" style="font-weight: 700; font-size: 1.1rem; color: #fff;">063623 52261</a>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <div class="contact-icon-box">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </div>
+                            <div class="contact-info-details">
+                                <h4>WhatsApp Chat</h4>
+                                <a href="https://wa.me/916362352261" target="_blank" rel="noopener">+91 63623 52261</a>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <div class="contact-icon-box">
+                                <i class="fa-brands fa-facebook"></i>
+                            </div>
+                            <div class="contact-info-details">
+                                <h4>Official Facebook Page</h4>
+                                <a href="https://www.facebook.com/travelsmartmysore/" target="_blank" rel="noopener">facebook.com/travelsmartmysore/</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Embedded Google Map centered on Rajiv Nagar 2nd Stage Mysuru -->
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3898.0562817290535!2d76.6800!3d12.3250!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba859f5f0000001%3A0x123456789abcdef!2s2841%2C%202nd%20Stage%2C%20Rajiv%20Nagar%2C%20Mysuru%2C%20Karnataka%20570019!5e0!3m2!1sen!2sin!4v1680000000000" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+
+                <div class="contact-card">
+                    <h3>Send Tour Inquiry</h3>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem; margin-bottom: 1.8rem;">Submit your details for custom packages and instant price quotes.</p>
+
+                    <form id="booking-form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Your Full Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" class="form-control" placeholder="Mobile / Phone Number" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Destination (e.g., Ooty, Coorg, Mysore Local)">
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" placeholder="Travel Dates, Passenger Count, Cab Preference..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="fa-solid fa-paper-plane"></i> Submit Booking Request
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast Notification Popup -->
+    <div class="toast" id="toast-msg">
+        <i class="fa-solid fa-circle-check" style="font-size:1.3rem;"></i>
+        <span>Inquiry received! We will call you back at 063623 52261 shortly.</span>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <svg class="svg-logo" viewBox="0 0 600 240" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:50px;">
+                        <rect width="600" height="240" rx="20" fill="#FFDE00"/>
+                        <path d="M110 100 C 120 40, 240 40, 360 70 C 260 120, 160 160, 110 100 Z" fill="#009640"/>
+                        <path d="M220 35 C 310 35, 360 80, 250 130 C 310 90, 280 55, 220 35 Z" fill="#FF5000"/>
+                        <path d="M220 80 C 320 80, 480 100, 480 115 C 380 140, 260 110, 220 80 Z" fill="#00A0E9"/>
+                        <path d="M270 65 L 300 45 L 370 45 L 430 65 L 500 67 C 505 67, 505 85, 495 85 L 490 85 C 485 70, 455 70, 450 85 L 350 85 C 345 70, 315 70, 310 85 L 275 85 Z" fill="none" stroke="#000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="332" cy="85" r="12" fill="none" stroke="#000" stroke-width="7"/>
+                        <circle cx="468" cy="85" r="12" fill="none" stroke="#000" stroke-width="7"/>
+                        <text x="300" y="145" text-anchor="middle" font-family="'Space Grotesk', Arial, sans-serif" font-weight="900" font-size="64" fill="#4A5568" letter-spacing="2">TRAVEL</text>
+                        <text x="300" y="198" text-anchor="middle" font-family="'Space Grotesk', Arial, sans-serif" font-weight="900" font-size="68" fill="#000000" letter-spacing="1">SMART</text>
+                        <text x="300" y="228" text-anchor="middle" font-family="'Outfit', Arial, sans-serif" font-weight="800" font-style="italic" font-size="22" fill="#000000">dream ► plan ► enjoy</text>
+                    </svg>
+
+                    <p>Your premier taxi, tour & cab rental service in Mysuru. Comfort, safety, and transparent pricing guaranteed.</p>
+                    
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/travelsmartmysore/" target="_blank" rel="noopener" class="social-btn" aria-label="Facebook Page"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://wa.me/916362352261" target="_blank" rel="noopener" class="social-btn" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        <a href="tel:06362352261" class="social-btn" aria-label="Call Direct"><i class="fa-solid fa-phone"></i></a>
+                        <a href="https://maps.app.goo.gl/YHVUENvendD8WTgW6" target="_blank" rel="noopener" class="social-btn" aria-label="Google Maps"><i class="fa-solid fa-location-dot"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#packages">Tour Packages</a></li>
+                        <li><a href="#stats">Stats & Fleet</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Address & Location</h4>
+                    <p style="color: var(--text-muted); margin-bottom: 0.6rem;">
+                        <strong>Address:</strong><br>
+                        2841, 2nd Stage, Rajiv Nagar,<br>Mysuru, Karnataka 570019
+                    </p>
+                    <p style="color: var(--text-muted);">
+                        <strong>Phone:</strong> <a href="tel:06362352261" style="color:var(--accent-color); text-decoration:none;">063623 52261</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; <span id="year"></span> Travel Smart Mysore. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set Dynamic Copyright Year
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // 1. Particle Canvas Engine
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 2 + 0.5;
+                    this.vx = (Math.random() - 0.5) * 0.3;
+                    this.vy = (Math.random() - 0.5) * 0.3;
+                    this.opacity = Math.random() * 0.4 + 0.1;
+                }
+
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+
+                    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                }
+
+                draw() {
+                    ctx.fillStyle = `rgba(163, 196, 0, ${this.opacity})`;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                const count = Math.floor((canvas.width * canvas.height) / 18000);
+                for (let i = 0; i < count; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function renderParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(renderParticles);
+            }
+
+            initParticles();
+            renderParticles();
+
+            // 2. Mobile Drawer Navbar Toggle
+            const hamburgerBtn = document.getElementById('hamburger-btn');
+            const navMenu = document.getElementById('nav-menu');
+
+            hamburgerBtn.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                const icon = hamburgerBtn.querySelector('i');
+                icon.className = navMenu.classList.contains('active') ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    navMenu.classList.remove('active');
+                    hamburgerBtn.querySelector('i').className = 'fa-solid fa-bars';
+                });
+            });
+
+            // 3. Stats Scroll Counter Animation
+            const statsSection = document.getElementById('stats');
+            const statNumbers = document.querySelectorAll('.stat-number');
+            let hasAnimated = false;
+
+            function checkCounters() {
+                if (!statsSection) return;
+                const pos = statsSection.getBoundingClientRect().top;
+                if (pos < window.innerHeight / 1.15 && !hasAnimated) {
+                    hasAnimated = true;
+                    statNumbers.forEach(num => {
+                        const target = +num.getAttribute('data-target');
+                        let current = 0;
+                        const step = Math.max(1, Math.floor(target / 45));
+
+                        const timer = setInterval(() => {
+                            current += step;
+                            if (current >= target) {
+                                num.innerText = target + (target >= 50 ? '+' : '');
+                                clearInterval(timer);
+                            } else {
+                                num.innerText = current;
+                            }
+                        }, 25);
+                    });
+                }
+            }
+
+            window.addEventListener('scroll', checkCounters);
+            checkCounters();
+
+            // 4. Form Submit Handler with Feedback Toast
+            const bookingForm = document.getElementById('booking-form');
+            const toast = document.getElementById('toast-msg');
+
+            bookingForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                toast.classList.add('show');
+                bookingForm.reset();
+
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>
